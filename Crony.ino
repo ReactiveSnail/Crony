@@ -1,4 +1,4 @@
-#define SCLK 4  // пины ардуины
+#define SCLK 4  // пины ардуино
 #define RCLK 3
 #define DIO 2
 
@@ -39,7 +39,7 @@ void setup() {
 
 
 void loop() {
-  DELL = random(1000, 50000);
+  DELL = random(1000, 50000); // Получаем случайное значение в диапазоне 1000-50000
   if (millis() - timing > DELL) { // Вместо DELL подставьте нужное вам значение паузы
     timing = millis();
     Face = random(7);
