@@ -7,16 +7,22 @@ int NUMBER1 = 0;
 int NUMBER2 = 0;
 int NUMBER3 = 0;
 
-const byte symbol[8] = {  // маска для 7 сигментного индикатора
+const byte symbol[15] = {  // маска для 7 сигментного индикатора
+  0b00000000, // 
   0b01110110, // H
   0b01111001, // E
   0b00111000, // L
   0b00111000, // L
   0b00111111, // O
   0b00000000, // 
+  0b00111110, // 1/2 W
+  0b00111110, // 1/2 W
+  0b00111111, // O
+  0b01110111, // R
+  0b00111000, // L
+  0b11011110, // d.
+  0b00000000, //
   0b01000000, // -
-  0b00000000, // 
-
 };
 const byte chr[3] = { // маска для разряда 0, 1, 2
   0b00000110, //100
@@ -39,15 +45,15 @@ void loop() {
   if (millis() - timing >= 1000) {  //Задержка 300 мСек
     timing = millis();
     NUMBER = NUMBER + 1;           //Счетчик 1-999
-    if (NUMBER == 8)
+    if (NUMBER == 15)
       NUMBER = 0;
   }
   NUMBER1 = NUMBER;
   NUMBER2 = NUMBER1 + 1;
-  if (NUMBER2 == 8)
+  if (NUMBER2 == 15)
       NUMBER2 = 0;
   NUMBER3 = NUMBER2 + 1;
-  if (NUMBER3 == 8)
+  if (NUMBER3 == 15)
       NUMBER3 = 0;
   
   
