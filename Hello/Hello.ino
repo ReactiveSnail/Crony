@@ -1,6 +1,6 @@
-#define SCLK 4//7  // пины ардуины
-#define RCLK 3//6
-#define DIO 2//5
+#define SCLK 4  // пины ардуинo
+#define RCLK 3
+#define DIO 2
 
 int NUMBER = 0;
 int NUMBER1 = 0;
@@ -15,8 +15,8 @@ const byte symbol[15] = {  // маска для 7 сигментного инд�
   0b00111000, // L
   0b00111111, // O
   0b00000000, // 
-  0b00111110, // 1/2 W
-  0b00111110, // 1/2 W
+  0b00111110, // 1/2 W = U
+  0b00111110, // 1/2 W = U
   0b00111111, // O
   0b01110111, // R
   0b00111000, // L
@@ -42,9 +42,9 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  if (millis() - timing >= 1000) {  //Задержка 300 мСек
+  if (millis() - timing >= 1000) {  //Задержка 1000 мСек
     timing = millis();
-    NUMBER = NUMBER + 1;           //Счетчик 1-999
+    NUMBER = NUMBER + 1;           //Счетчик
     if (NUMBER == 15)
       NUMBER = 0;
   }
@@ -66,7 +66,7 @@ void loop() {
 
   for (int i = 0; i <= 2; i++) {
     digitalWrite(RCLK, LOW); // открываем защелку
-    shiftOut(DIO, SCLK, MSBFIRST,  chr[i]);  // включаем разряд
+    shiftOut(DIO, SCLK, MSBFIRST,  chr[i]);  // включаем разряды
     shiftOut(DIO, SCLK, MSBFIRST, symbol[NUMBERS[i]]);
     digitalWrite(RCLK, HIGH); // защелкиваем регистры
     delay(1);
