@@ -9,7 +9,7 @@
 // Внутреннее опорное напряжение (подобрать)
 const float VRef = 1.08;
 // Коэффициент входного резистивного делителя (Rh + Rl) / Rl. IN <-[ Rh ]--(analogInPin)--[ Rl ]--|GND
-const float VoltMult = (103.8 + 10.430) / 10.430;
+const float VoltMult = (198.8 + 10.430) / 10.430;
 
 float InVolt, Volt;
 
@@ -67,7 +67,7 @@ void loop() {
   Volt = InVolt * VoltMult * VRef / 1023;
 
   NUMBER = (Volt * 10);  // float Volt умножается на 10 что бы переместить запятую
-  Serial.println(Volt);   //и  преобразуется в int NUMBER (123.4 = 123)
+  Serial.println(InVolt);   //и  преобразуется в int NUMBER (123.4 = 123)
   NUMBER3 = NUMBER % 10; //001
   NUMBER2 = NUMBER / 10; //010
   if (NUMBER2 >= 10) {

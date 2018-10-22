@@ -1,5 +1,9 @@
 #define rC 15 //randomCatche //Генератор случайростей
 #define Led 11
+float RndC ;
+int rndRndC;
+
+
 
 #define SCLK_C 4 // пины ардуино для подключения Crony
 #define RCLK_C 3
@@ -32,7 +36,7 @@ long previousMillis = 0;
 boolean Lock = false; //Защёлка/фиксатор для кнопки
 //*******
 
-int ledPin = 10;
+int ledPin = 13;
 
 unsigned long timer0; //Переменная для работы таймера
 unsigned long timer1; //Переменная для работы таймера
@@ -154,43 +158,47 @@ void setup() {
   //randomCatcher
   pinMode(rC, INPUT);
 
+
   //Serial.begin(9600);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
+  //Генератор случайростей
+  //randomCatcher
+  float RndC = analogRead(rC);
+  rndRndC = random(RndC);
+  analogWrite(Led, rndRndC / 5);
 
   //Цифровая кнопка от TimeMachine();
   if  (digitalRead(pin1) == LOW ) {        //если pin1 включили,
-    if (millis() - previousMillis > 150) { //то ждем 100мс для
+    if (millis() - previousMillis > 100) { //то ждем 10мс для
       previousMillis = millis();           //отсечки дребезга контактов
-      //funct++;                             // и в переменную прибавим один
-      Lock = !Lock;   //Стоп - Пуск TimeMachine();
-      if (!Lock) digitalWrite(ledPin, LOW);
-      if (Lock) digitalWrite(ledPin, HIGH);
+      if (digitalRead(pin1) == LOW ) {
+        //funct++;                             // и в переменную прибавим один
+        Lock = !Lock;   //Стоп - Пуск TimeMachine();
+        if (!Lock) digitalWrite(ledPin, LOW);
+        if (Lock) digitalWrite(ledPin, HIGH);
+      }
     }
   }
   Lock = Lock;
   //TimeMachine();
   if (millis() - timer1 > 100) {
     TiMer1 = TiMer1 + 1;
-    if (TiMer1 == 256) TiMer1 = 1;
+    if (TiMer1 == 701) TiMer1 = 1;
     timer1 = millis();
-     //digitalWrite(ledPin, LOW);
+    //digitalWrite(ledPin, LOW);
   }
   //Выделятор интервалов времени
-  //if (TiMer1 >= 1 && TiMer1 <= 2 && !Lock) digitalWrite(ledPin, HIGH);
-  if (TiMer1 >= 3 && TiMer1 <= 50 && !Lock) funct = 0;
-  //if (TiMer1 >= 51 && TiMer1 <= 52 && !Lock) digitalWrite(ledPin, HIGH);
-  if (TiMer1 >= 53 && TiMer1 <= 100 && !Lock) funct = 1;
-  //if (TiMer1 >= 101 && TiMer1 <= 102 && !Lock) digitalWrite(ledPin, HIGH);
-  if (TiMer1 >= 103 && TiMer1 <= 150 && !Lock) funct = 2;
-  //if (TiMer1 >= 151 && TiMer1 <= 152 && !Lock) digitalWrite(ledPin, HIGH);
-  if (TiMer1 >= 153 && TiMer1 <= 200 && !Lock) funct = 3;
-  //if (TiMer1 >= 201 && TiMer1 <= 202 && !Lock) digitalWrite(ledPin, HIGH);
-  if (TiMer1 >= 203 && TiMer1 <= 255 && !Lock) funct = 4;
-  //if (TiMer1 >= 318 && TiMer1 <= 433 && !Lock) funct = 5;
-  //if (TiMer1 >= 534 && TiMer1 <= 687 && !Lock) funct = 6;
+  if (TiMer1 >= 3 && TiMer1 <= 45 && !Lock) funct = 0;
+  if (TiMer1 >= 46 && TiMer1 <= 62 && !Lock) funct = 1;
+  if (TiMer1 >= 63 && TiMer1 <= 150 && !Lock) funct = 2;
+  if (TiMer1 >= 151 && TiMer1 <= 300 && !Lock) funct = 3;
+  if (TiMer1 >= 301 && TiMer1 <= 330 && !Lock) funct = 1;
+  if (TiMer1 >= 331 && TiMer1 <= 565 && !Lock) funct = 4;
+  if (TiMer1 >= 566  && TiMer1 <= 596 && !Lock) funct = 1;
+  if (TiMer1 >= 597 && TiMer1 <= 700 && !Lock) funct = 2;;
 
 
   if (millis() - timer0 >= del) {  // Таймер //Переключатель, галетный, програмный...%)
@@ -205,13 +213,13 @@ void loop() {
       Crony();
     }
     if (funct == 3) {
-      Ciferblat();
+      randomCrony();
     }
     if (funct == 4) {
       randomCatcher();
     }
     //if (funct == 5) {
-      // TimeMachine();
+    // TimeMachine();
     //}
   }
 
@@ -239,7 +247,7 @@ void loop() {
   if (funct == 5) {
     funct = 0;
   }
-  Nokia(); //Ввводим информацию на дисплей Nokia 5110
+  //Nokia(); //Ввводим информацию на дисплей Nokia 5110
   //Serial.print(NUMBER1);
   //Serial.print("___");
   //Serial.print(NUMBER2);
@@ -264,15 +272,12 @@ void Crony() {
 
 void randomCatcher() {
   // Счетчик
-  del = 1000;
+  del = 150;
   other = symbol[4][0]; //Включаем "-" на всех разрядах
-  line = 1; //Выбор линии из массива с символами
+  line = 1; //Выбор линии из массива с символам
   iIi = 10;
-  
-  float RndC = analogRead(rC);
-  int EYES = random(RndC);
-  
-  NUMBER = EYES;
+
+  NUMBER = rndRndC;
   //Получаем маску для каждого разряда
   NUMBER3 = NUMBER % 10;       //001
   NUMBER2 = NUMBER / 10;       //010
@@ -283,7 +288,29 @@ void randomCatcher() {
   if (NUMBER1 >= 10) {
     NUMBER1 = 0;
   }
-  analogWrite(Led, EYES / 4);
+
+}
+
+void randomCrony () {
+  // Счетчик
+  del = 150;
+  other = symbol[4][0]; //Включаем "-" на всех разрядах
+  int Line = random(1, 5);
+  line = Line; //Выбор линии из массива с символами
+  iIi = 10;
+
+  NUMBER = rndRndC;
+  //Получаем маску для каждого разряда
+  NUMBER3 = NUMBER % 10;       //001
+  NUMBER2 = NUMBER / 10;       //010
+  if (NUMBER2 >= 10) {
+    NUMBER2 = (NUMBER / 10) % 10;
+  }
+  NUMBER1 = NUMBER / 100;      //100
+  if (NUMBER1 >= 10) {
+    NUMBER1 = 0;
+  }
+
 }
 
 void HelloWorld() {
@@ -339,7 +366,7 @@ void Anymation() {
   if (NUMBER >= 7) NUMBER = 1;
   //На все разряды выводим одинаковую маску
   NUMBER1 = NUMBER;
-  NUMBER2 = NUMBER;
+  NUMBER2 = NUMBER - 1;
   NUMBER3 = NUMBER;
 }
 
@@ -366,15 +393,15 @@ void WoltMetr() {
   //Переключение сегмента h между разрядами в зависимости от напряжения(от значения переменной Volt)
   // если Volt <= 9.99  идикация 9.99
   // если Volt >=10 на пример 12.34 то индикация 12.3
-  if (Volt <= 9.99){
+  if (Volt <= 9.99) {
     NUMBER = (Volt * 100);
     iIi = 0;
   }
-  if (Volt >=10.0){
+  if (Volt >= 10.0) {
     NUMBER = (Volt * 10);
     iIi = 1;
   }
-  if (Volt <=0.01){
+  if (Volt <= 0.01) {
     NUMBER = (Volt * 10);
     iIi = 10; // Отключение h (,)
   }
@@ -416,24 +443,11 @@ void Nokia() {
   display.setCursor(0, 30); // установка позиции курсора
   display.print("del..");
   display.setCursor(35, 30);
-  display.print(del);
+  display.print(RndC);
 
   display.display();
 }
 
-void allCikl() {
-  int CNT;
-  unsigned long timing1;
-  if (millis() - timing1 > 100) {
-    CNT = CNT + 1;
-    if (CNT == 288) CNT = 1;
-    timing1 = millis();
-  }
-  if (CNT >= 1 && CNT <= 15) Anymation();
-  if (CNT >= 16 && CNT <= 117) Crony();
-  if (CNT >= 118 && CNT <= 133) Anymation();
-  if (CNT >= 134 && CNT <= 287) Ciferblat();
-}
 
 //Serial.print(NUMBER);
 //Serial.print("___");
